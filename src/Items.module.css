@@ -1,0 +1,44 @@
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  display: flex;
+  justify-content: space-between;
+  border: 1px solid rgba(31, 17, 17, 0.58);
+  margin-bottom: 0.5em;
+  border-radius: 5px;
+  background-color: rgb(233 226 220);
+  max-width: 70%;
+  margin-left: 15%;
+  text-align: center;
+}
+
+li span {
+  margin-top: 0.5em;
+}
+
+.checkbox {
+  width: 1.5em;
+  height: 1.5em;
+  flex-shrink: 0;
+  flex-grow: 0;
+  border-radius: 50%;
+  margin-left: 5px;
+  margin-right: 0.5em;
+  background-size: 50% 50%;
+}
+
+.delete {
+  height: 23px;
+  width: 23px;
+  border: 0;
+  outline: none;
+  background-color: transparent;
+  cursor: pointer;
+  background-image: url(../img/x_icon.png);
+  background-size: 100%;
+  margin-right: 5px;
+  margin-top: 4px;
+}

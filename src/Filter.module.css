@@ -1,0 +1,24 @@
+.filter {
+  max-width: 70%;
+  margin-left: 15%;
+  display: flex;
+  justify-content: space-around;
+  text-align: center;
+  margin-bottom: 1em;
+}
+
+.filter button {
+  width: 60px;
+  height: 40px;
+  color: rgba(31, 17, 17, 0.88);
+  border-radius: 50%;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.filter button:hover,
+.filter button:focus {
+  outline: none;
+  background-color: rgb(255, 255, 255);
+}

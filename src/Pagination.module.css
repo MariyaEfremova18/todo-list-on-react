@@ -1,0 +1,44 @@
+.pagination {
+  border: 0.5px solid rgba(31, 17, 17, 0.51);
+  border-radius: 0.7em;
+  max-width: fit-content;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 1em;
+  background-color: rgb(222 184 135 / 42%);
+}
+
+.pagination button {
+  outline: none;
+  background-color: transparent;
+  cursor: pointer;
+  font-size: 22px;
+}
+
+.pageNumber {
+  text-decoration: none;
+  color: rgba(31, 17, 17, 0.81);
+  border: none;
+  border-right: 0.5px solid rgba(31, 17, 17, 0.48);
+  padding: 0 5px;
+  padding-top: 2px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.next {
+  border: none;
+  color: rgba(31, 17, 17, 0.61);
+}
+
+.previous {
+  color: rgba(31, 17, 17, 0.61);
+  border: none;
+  border-right: 0.5px solid rgba(31, 17, 17, 0.48);
+}
+
+.pagination button:hover,
+.pagination button:focus {
+  outline: none;
+  color: black;
+}
