@@ -1,22 +1,20 @@
+import React from "react";
 import style from "./Items.module.css";
 
-function Items() {
+const Items = (items) => {
   return (
-    <div>
-      <ul>
-        <li>
-          <div>
-            <input type="checkbox" className={style.checkbox} id="checkable" />
-            <label htmlFor="checkable">Item</label>
-          </div>
-          <div>
-            <span>Date</span>
-            <button className={style.delete} id=""></button>
-          </div>
-        </li>
-      </ul>
+    <div className={style.itemOfList}>
+      <div className={style.content}>
+        <input
+          type="checkbox"
+          className={style.checkbox}
+          defaultChecked={false}
+        />
+        <p>{items.title}</p>
+      </div>
+      <button></button>
     </div>
   );
-}
+};
 
 export default Items;

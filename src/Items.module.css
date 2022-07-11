@@ -1,22 +1,7 @@
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-li {
+.itemOfList {
   display: flex;
   justify-content: space-between;
-  border: 1px solid rgba(31, 17, 17, 0.58);
-  margin-bottom: 0.5em;
-  border-radius: 5px;
-  background-color: rgb(233 226 220);
-  max-width: 70%;
-  margin-left: 15%;
-  text-align: center;
-}
-
-li span {
-  margin-top: 0.5em;
+  margin: 0 1em;
 }
 
 .checkbox {
@@ -28,9 +13,14 @@ li span {
   margin-left: 5px;
   margin-right: 0.5em;
   background-size: 50% 50%;
+  box-shadow: none;
 }
 
-.delete {
+.content {
+  display: flex;
+}
+
+button {
   height: 23px;
   width: 23px;
   border: 0;
