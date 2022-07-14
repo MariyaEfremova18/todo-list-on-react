@@ -1,7 +1,7 @@
 import React from "react";
-import style from "./Items.module.css";
+import style from "./Item.module.css";
 
-const Items = (items) => {
+const Item = (props) => {
   return (
     <div className={style.itemOfList}>
       <div className={style.content}>
@@ -10,11 +10,11 @@ const Items = (items) => {
           className={style.checkbox}
           defaultChecked={false}
         />
-        <p>{items.title}</p>
+        <p>{props.item.title}</p>
       </div>
-      <button></button>
+      <button onClick={() => props.del(props.item.id)}></button>
     </div>
   );
 };
 
-export default Items;
+export default Item;

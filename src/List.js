@@ -1,12 +1,12 @@
 import React from "react";
-import Items from "./Items";
+import Item from "./Item";
 import style from "./List.module.css";
 
-const List = ({ items }) => {
+const List = (props) => {
   return (
-    <ul>
-      {items.map((item) => (
-        <Items key={item.id} {...item} />
+    <ul className={style.list}>
+      {props.items.map((item, index) => (
+        <Item key={`item_${index}`} del={props.del} item={item} {...item} />
       ))}
     </ul>
   );

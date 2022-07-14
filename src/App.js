@@ -8,7 +8,7 @@ const App = () => {
   const [itemsTitle, setitemsTitle] = useState("");
 
   const addItem = (event) => {
-    if (event.key === "Enter" && event.target.value != "") {
+    if (event.key === "Enter" && event.target.value !== "") {
       setItems([
         ...items,
         {
@@ -20,6 +20,11 @@ const App = () => {
 
       setitemsTitle("");
     }
+  };
+
+  const deleteItem = (id) => {
+    const indexDeleteItem = items.findIndex((i) => i.id === id);
+    setItems(items.filter((_, index) => index !== indexDeleteItem));
   };
 
   return (
@@ -34,7 +39,7 @@ const App = () => {
         placeholder="I want to..."
       />
 
-      <List items={items} />
+      <List items={items} del={deleteItem} />
     </div>
   );
 };
