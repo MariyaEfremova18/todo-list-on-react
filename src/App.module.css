@@ -17,7 +17,7 @@ h1 {
   text-align: center;
 }
 
-input {
+.inputItem {
   box-sizing: border-box;
   width: 70%;
   height: 1.5em;
@@ -29,18 +29,18 @@ input {
   margin-left: 15%;
 }
 
-input:focus {
+.inputItem:focus {
   outline: none;
   padding-left: 0.5em;
 }
 
-input::placeholder {
+.inputItem::placeholder {
   padding-left: 0.5em;
   color: rgba(31, 17, 17, 0.723);
   font-style: italic;
   font-family: "Courier New", Courier, monospace;
 }
 
-input:focus::placeholder {
+.inputItem:focus::placeholder {
   color: transparent;
 }

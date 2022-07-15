@@ -17,3 +17,7 @@
   cursor: pointer;
   border-radius: 0.2em;
 }
+
+.pagination button:focus {
+  background-color: rgba(177, 155, 149, 0.623);
+}

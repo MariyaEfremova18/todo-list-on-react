@@ -11,8 +11,8 @@
 }
 
 .checkbox {
-  width: 1em;
-  height: 1em;
+  width: 2em;
+  height: 2em;
   flex-shrink: 0;
   flex-grow: 0;
   border-radius: 50%;
@@ -20,16 +20,13 @@
   margin-right: 0.5em;
   background-size: 50% 50%;
   box-shadow: none;
+  align-items: center;
 }
 
 .content {
   display: flex;
   align-items: center;
   max-width: 100%;
-}
-
-.content input {
-  margin-top: 1em;
 }
 
 .content p {
@@ -52,8 +49,26 @@
   background-size: 100%;
   margin-right: 5px;
   margin-top: 0.1em;
+  margin-right: 0.1em;
 }
 
 .date {
   font-size: 15px;
+}
+
+.editInput {
+  box-shadow: none;
+  background-color: rgba(194, 163, 154, 0.329);
+  max-width: 5em;
+  font-size: 25px;
+  border: 1px solid rgb(90, 45, 29);
+  border-radius: 0.3em;
+  padding-top: 0.1em;
+  display: flex;
+  justify-content: space-between;
+  margin-right: 1em;
+  align-items: center;
+  width: 80px;
+  outline: none;
+  font-stretch: expanded;
 }

@@ -8,10 +8,10 @@ const ITEMS_PER_PAGE = 5;
 
 const App = () => {
   const [items, setItems] = useState([]);
+  const [itemsTitle, setitemsTitle] = useState("");
   const [filter, setFilter] = useState(undefined);
   const [sort, setSort] = useState("ASC");
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsTitle, setitemsTitle] = useState("");
   const [filteredTasks, setFilteredTasks] = useState([]);
 
   useEffect(() => {
@@ -19,6 +19,10 @@ const App = () => {
       .filter((item) =>
         typeof filter === "boolean" ? item.completed === filter : item
       )
+      .sort((a, b) => {
+        if (sort === "ASC") return a.createdAt - b.createdAt;
+        return b.createdAt - a.createdAt;
+      })
       .slice((currentPage - 1) * ITEMS_PER_PAGE, ITEMS_PER_PAGE * currentPage);
     setFilteredTasks(todos);
   }, [filter, sort, currentPage, items]);
@@ -29,7 +33,7 @@ const App = () => {
       const currentDate = date.getDate();
       const currentMonth = date.getMonth();
       const currentYear = date.getFullYear();
-      const strDate = `${currentDate}/${currentMonth}/${currentYear}`;
+      const strDate = `${currentMonth}/${currentDate}/${currentYear}`;
 
       setItems([
         ...items,
@@ -38,11 +42,24 @@ const App = () => {
           title: itemsTitle,
           completed: false,
           date: strDate,
+          createdAt: date,
         },
       ]);
 
       setitemsTitle("");
     }
+  };
+
+  const onHandleChange = (id) => {
+    return (key, value) =>
+      setItems((prev) =>
+        prev.map((todo) => {
+          if (todo.id === id) {
+            return { ...todo, [key]: value };
+          }
+          return todo;
+        })
+      );
   };
 
   const changeCurrentPage = (value) => setCurrentPage(value);
@@ -53,8 +70,10 @@ const App = () => {
 
   const handleFilterItem = (value) => setFilter(value);
 
+  const sortItemOnDate = (value) => setSort(value);
+
   const checkItem = (id) => {
-    const arr = items.map((i) => {
+    const checkedItems = items.map((i) => {
       if (i.id === id) {
         const element = { ...i };
         element.completed = !i.completed;
@@ -62,7 +81,7 @@ const App = () => {
       }
       return i;
     });
-    setItems(arr);
+    setItems(checkedItems);
   };
 
   const deleteItem = (id) => {
@@ -75,6 +94,7 @@ const App = () => {
       <h1>ToDo</h1>
 
       <input
+        className={style.inputItem}
         type="text"
         value={itemsTitle}
         onChange={(event) => setitemsTitle(event.target.value)}
@@ -82,9 +102,14 @@ const App = () => {
         placeholder="I want to..."
       />
 
-      {items.length >= 1 ? <DataSort /> : ""}
+      {items.length >= 1 ? <DataSort sortItemOnDate={sortItemOnDate} /> : ""}
 
-      <List items={filteredTasks} del={deleteItem} change={checkItem} />
+      <List
+        onHandleChange={onHandleChange}
+        items={filteredTasks}
+        del={deleteItem}
+        change={checkItem}
+      />
 
       {items.length >= 1 ? <Filter onChange={handleFilterItem} /> : ""}
 

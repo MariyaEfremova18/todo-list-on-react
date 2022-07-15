@@ -7,6 +7,7 @@ const List = (props) => {
     <ul className={style.list}>
       {props.items.map((item) => (
         <Item
+          onHandleChange={props.onHandleChange(item.id)}
           key={Math.random()}
           del={props.del}
           item={item}

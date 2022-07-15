@@ -15,3 +15,7 @@
   border-radius: 0.5em;
   font-size: 15px;
 }
+
+.filterButtons button:focus {
+  background-color: rgba(207, 188, 183, 0.822);
+}

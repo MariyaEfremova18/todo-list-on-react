@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import style from "./Item.module.css";
 
-const Item = ({ item, change, del }) => {
+const Item = ({ item, change, del, onHandleChange }) => {
+  const [isEditable, setIsEditable] = useState(false);
+  const [value, setValue] = useState(item.title);
   return (
     <div className={style.itemOfList}>
       <div className={style.content}>
@@ -11,7 +13,21 @@ const Item = ({ item, change, del }) => {
           defaultChecked={item.completed}
           onClick={() => change(item.id)}
         />
-        <p>{item.title}</p>
+        {isEditable ? (
+          <input
+            className={style.editInput}
+            value={value}
+            onChange={({ target }) => setValue(target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                onHandleChange("title", value);
+                setIsEditable(false);
+              }
+            }}
+          />
+        ) : (
+          <p onClick={() => setIsEditable(true)}>{item.title}</p>
+        )}
       </div>
       <p className={style.date}>{item.date}</p>
       <button onClick={() => del(item.id)}></button>
