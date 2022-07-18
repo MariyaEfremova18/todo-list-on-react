@@ -19,7 +19,7 @@ const Item = ({ item, change, del, onHandleChange }) => {
             value={value}
             onChange={({ target }) => setValue(target.value)}
             onKeyDown={(e) => {
-              if (e.key === "Enter") {
+              if (e.key === "Enter" && e.target.value != "") {
                 onHandleChange("title", value);
                 setIsEditable(false);
               }
@@ -29,8 +29,10 @@ const Item = ({ item, change, del, onHandleChange }) => {
           <p onClick={() => setIsEditable(true)}>{item.title}</p>
         )}
       </div>
-      <p className={style.date}>{item.date}</p>
-      <button onClick={() => del(item.id)}></button>
+      <div className={style.dateAndDelete}>
+        <p className={style.date}>{item.date}</p>
+        <button onClick={() => del(item.id)}></button>
+      </div>
     </div>
   );
 };

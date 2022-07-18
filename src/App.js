@@ -6,9 +6,11 @@ import Filter from "./Filter";
 import Pagination from "./Pagination";
 const ITEMS_PER_PAGE = 5;
 
+// const FILTERS = {};
+
 const App = () => {
   const [items, setItems] = useState([]);
-  const [itemsTitle, setitemsTitle] = useState("");
+  const [itemsTitle, setItemsTitle] = useState("");
   const [filter, setFilter] = useState(undefined);
   const [sort, setSort] = useState("ASC");
   const [currentPage, setCurrentPage] = useState(1);
@@ -46,7 +48,7 @@ const App = () => {
         },
       ]);
 
-      setitemsTitle("");
+      setItemsTitle("");
     }
   };
 
@@ -97,7 +99,7 @@ const App = () => {
         className={style.inputItem}
         type="text"
         value={itemsTitle}
-        onChange={(event) => setitemsTitle(event.target.value)}
+        onChange={(event) => setItemsTitle(event.target.value)}
         onKeyDown={addItem}
         placeholder="I want to..."
       />
@@ -111,7 +113,11 @@ const App = () => {
         change={checkItem}
       />
 
-      {items.length >= 1 ? <Filter onChange={handleFilterItem} /> : ""}
+      {items.length >= 1 ? (
+        <Filter filter={filter} handleFilterItem={handleFilterItem} />
+      ) : (
+        ""
+      )}
 
       {items.length > ITEMS_PER_PAGE ? (
         <Pagination

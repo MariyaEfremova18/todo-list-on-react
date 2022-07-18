@@ -6,14 +6,23 @@
 .up {
   background-image: url(../img/2931161_arrow_top_up_direction_move_icon.png);
   background-size: 100%;
-  background-color: inherit;
   margin-left: 0.5em;
+}
+
+.up:focus {
+  border-radius: 20%;
+  background-color: rgba(92, 67, 61, 0.137);
 }
 
 .down {
   background-image: url(../img/2931160_down_direction_download_pointer_arrow_icon.png);
   background-size: 100%;
   background-color: inherit;
+}
+
+.down:focus {
+  border-radius: 20%;
+  background-color: rgba(92, 67, 61, 0.137);
 }
 
 .sorting button {
@@ -23,4 +32,7 @@
   outline: none;
   background-color: transparent;
   cursor: pointer;
+  border: 1px solid rgba(92, 67, 61, 0.541);
+  border-radius: 20%;
+  margin-right: 5px;
 }

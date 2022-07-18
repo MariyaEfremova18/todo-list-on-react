@@ -46,14 +46,20 @@
   background-color: transparent;
   cursor: pointer;
   background-image: url(../img/x_icon.png);
-  background-size: 100%;
+  background-repeat: no-repeat;
+  background-size: 80%;
   margin-right: 5px;
   margin-top: 0.1em;
-  margin-right: 0.1em;
+  margin-left: 0.2em;
 }
 
 .date {
   font-size: 15px;
+}
+
+.dateAndDelete {
+  display: flex;
+  align-items: center;
 }
 
 .editInput {

@@ -12,7 +12,6 @@ const List = (props) => {
           del={props.del}
           item={item}
           change={props.change}
-          {...item}
         />
       ))}
     </ul>

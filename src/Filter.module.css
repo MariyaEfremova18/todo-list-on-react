@@ -16,6 +16,10 @@
   font-size: 15px;
 }
 
-.filterButtons button:focus {
+/* .filterButtons button:focus {
+  background-color: rgba(207, 188, 183, 0.822);
+} */
+
+.filterButtons .active {
   background-color: rgba(207, 188, 183, 0.822);
 }
