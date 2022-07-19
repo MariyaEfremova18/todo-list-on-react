@@ -1,17 +1,19 @@
 .sorting p {
   margin: 0 auto;
   max-width: max-content;
+  font-size: 15px;
 }
 
 .up {
   background-image: url(../img/2931161_arrow_top_up_direction_move_icon.png);
   background-size: 100%;
   margin-left: 0.5em;
+  background-color: inherit;
 }
 
 .up:focus {
   border-radius: 20%;
-  background-color: rgba(92, 67, 61, 0.137);
+  background-color: rgba(88, 70, 66, 0.342);
 }
 
 .down {
@@ -22,12 +24,12 @@
 
 .down:focus {
   border-radius: 20%;
-  background-color: rgba(92, 67, 61, 0.137);
+  background-color: rgba(88, 70, 66, 0.342);
 }
 
 .sortingActive {
   border-radius: 20%;
-  background-color: rgba(92, 67, 61, 0.137);
+  background-color: rgba(88, 70, 66, 0.342);
 }
 
 .sorting button {

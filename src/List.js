@@ -2,16 +2,16 @@ import React from "react";
 import Item from "./Item";
 import style from "./List.module.css";
 
-const List = (props) => {
+const List = ({ onHandleChange, filteredTasks, deleteItem, checkItem }) => {
   return (
     <ul className={style.list}>
-      {props.items.map((item) => (
+      {filteredTasks.map((item) => (
         <Item
-          onHandleChange={props.onHandleChange(item.id)}
+          onHandleChange={onHandleChange(item.id)}
           key={Math.random()}
-          del={props.del}
+          deleteItem={deleteItem}
           item={item}
-          change={props.change}
+          checkItem={checkItem}
         />
       ))}
     </ul>

@@ -16,6 +16,9 @@ const App = () => {
   const [filteredTasks, setFilteredTasks] = useState([]);
 
   useEffect(() => {
+    const startItem = (currentPage - 1) * ITEMS_PER_PAGE;
+    const endItem = ITEMS_PER_PAGE * currentPage;
+
     const todos = items
       .filter((item) =>
         typeof filter === "boolean" ? item.completed === filter : item
@@ -24,7 +27,7 @@ const App = () => {
         if (sort === "ASC") return a.createdAt - b.createdAt;
         return b.createdAt - a.createdAt;
       })
-      .slice((currentPage - 1) * ITEMS_PER_PAGE, ITEMS_PER_PAGE * currentPage);
+      .slice(startItem, endItem);
     setFilteredTasks(todos);
   }, [filter, sort, currentPage, items]);
 
@@ -116,9 +119,9 @@ const App = () => {
 
       <List
         onHandleChange={onHandleChange}
-        items={filteredTasks}
-        del={deleteItem}
-        change={checkItem}
+        filteredTasks={filteredTasks}
+        deleteItem={deleteItem}
+        checkItem={checkItem}
       />
 
       {items.length >= 1 ? (
