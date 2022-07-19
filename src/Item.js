@@ -11,15 +11,16 @@ const Item = ({ item, change, del, onHandleChange }) => {
           type="checkbox"
           className={style.checkbox}
           defaultChecked={item.completed}
-          onClick={() => change(item.id)}
+          onKeyDown={() => change(item.id)}
         />
         {isEditable ? (
           <input
+            autoFocus
             className={style.editInput}
             value={value}
             onChange={({ target }) => setValue(target.value)}
             onKeyDown={(e) => {
-              if (e.key === "Enter" && e.target.value != "") {
+              if (e.key === "Enter" && e.target.value.trim() !== "") {
                 onHandleChange("title", value);
                 setIsEditable(false);
               }

@@ -44,3 +44,6 @@ h1 {
 .inputItem:focus::placeholder {
   color: transparent;
 }
+.active {
+  background-color: rgba(207, 188, 183, 0.822);
+}

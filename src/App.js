@@ -4,9 +4,8 @@ import style from "./App.module.css";
 import DataSort from "./DataSort";
 import Filter from "./Filter";
 import Pagination from "./Pagination";
-const ITEMS_PER_PAGE = 5;
 
-// const FILTERS = {};
+const ITEMS_PER_PAGE = 5;
 
 const App = () => {
   const [items, setItems] = useState([]);
@@ -30,11 +29,11 @@ const App = () => {
   }, [filter, sort, currentPage, items]);
 
   const addItem = (event) => {
-    if (event.key === "Enter" && event.target.value !== "") {
+    if (event.key === "Enter" && event.target.value.trim() !== "") {
       const date = new Date();
       const currentDate = date.getDate();
       const currentMonth = date.getMonth();
-      const currentYear = date.getFullYear();
+      const currentYear = String(date.getFullYear()).slice(2);
       const strDate = `${currentMonth}/${currentDate}/${currentYear}`;
 
       setItems([
@@ -64,13 +63,18 @@ const App = () => {
       );
   };
 
-  const changeCurrentPage = (value) => setCurrentPage(value);
+  const changeCurrentPage = (value) => {
+    setCurrentPage(value);
+  };
 
   const nextPage = () => setCurrentPage((prev) => prev + 1);
 
   const prevPage = () => setCurrentPage((prev) => prev - 1);
 
-  const handleFilterItem = (value) => setFilter(value);
+  const handleFilterItem = (value) => {
+    setCurrentPage(1);
+    setFilter(value);
+  };
 
   const sortItemOnDate = (value) => setSort(value);
 
@@ -104,7 +108,11 @@ const App = () => {
         placeholder="I want to..."
       />
 
-      {items.length >= 1 ? <DataSort sortItemOnDate={sortItemOnDate} /> : ""}
+      {items.length >= 1 ? (
+        <DataSort sort={sort} sortItemOnDate={sortItemOnDate} />
+      ) : (
+        ""
+      )}
 
       <List
         onHandleChange={onHandleChange}
@@ -121,6 +129,7 @@ const App = () => {
 
       {items.length > ITEMS_PER_PAGE ? (
         <Pagination
+          currentPage={currentPage}
           items={items}
           ITEMS_PER_PAGE={ITEMS_PER_PAGE}
           changeCurrentPage={changeCurrentPage}

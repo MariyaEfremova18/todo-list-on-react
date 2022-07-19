@@ -7,6 +7,7 @@ const Pagination = ({
   changeCurrentPage,
   nextPage,
   prevPage,
+  currentPage,
 }) => {
   const pageCount = [];
 
@@ -17,9 +18,13 @@ const Pagination = ({
   return (
     <div>
       <ul className={style.pagination}>
-        <button className={style.pageNumber} onClick={prevPage}>
-          &laquo;
-        </button>
+        {pageCount.length > 1 ? (
+          <button className={style.pageNumber} onClick={prevPage}>
+            &laquo;
+          </button>
+        ) : (
+          ""
+        )}
 
         {pageCount.map((number) => (
           <li
@@ -27,7 +32,11 @@ const Pagination = ({
             onClick={() => changeCurrentPage(number)}
             key={number}
           >
-            <button>{number}</button>
+            <button
+              className={currentPage === number ? `${style.active}` : null}
+            >
+              {number}
+            </button>
           </li>
         ))}
 

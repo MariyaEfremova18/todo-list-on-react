@@ -25,12 +25,16 @@
   background-color: rgba(92, 67, 61, 0.137);
 }
 
+.sortingActive {
+  border-radius: 20%;
+  background-color: rgba(92, 67, 61, 0.137);
+}
+
 .sorting button {
   height: 1.8em;
   width: 1.8em;
   border: 0;
   outline: none;
-  background-color: transparent;
   cursor: pointer;
   border: 1px solid rgba(92, 67, 61, 0.541);
   border-radius: 20%;
