@@ -13,6 +13,8 @@ const App = () => {
   const [sort, setSort] = useState(SORT.ASC);
   const [currentPage, setCurrentPage] = useState(1);
   const [filteredTasks, setFilteredTasks] = useState([]);
+  const [isEditableItem, setIsEditableItem] = useState(false);
+  const [value, setValue] = useState("");
 
   useEffect(() => {
     const startItem = (currentPage - 1) * ITEMS_PER_PAGE;
@@ -127,6 +129,10 @@ const App = () => {
         filteredTasks={filteredTasks}
         deleteItem={deleteItem}
         checkItem={checkItem}
+        setIsEditableItem={setIsEditableItem}
+        isEditableItem={isEditableItem}
+        value={value}
+        setValue={setValue}
       />
 
       {items.length >= 1 ? (

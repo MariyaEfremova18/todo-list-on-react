@@ -2,7 +2,16 @@ import React from "react";
 import Item from "./Item";
 import style from "./List.module.css";
 
-const List = ({ onHandleChange, filteredTasks, deleteItem, checkItem }) => {
+const List = ({
+  onHandleChange,
+  filteredTasks,
+  deleteItem,
+  checkItem,
+  setIsEditableItem,
+  isEditableItem,
+  value,
+  setValue,
+}) => {
   return (
     <ul className={style.list}>
       {filteredTasks.map((item) => (
@@ -12,6 +21,10 @@ const List = ({ onHandleChange, filteredTasks, deleteItem, checkItem }) => {
           deleteItem={deleteItem}
           item={item}
           checkItem={checkItem}
+          setIsEditableItem={setIsEditableItem}
+          isEditableItem={isEditableItem}
+          value={value}
+          setValue={setValue}
         />
       ))}
     </ul>

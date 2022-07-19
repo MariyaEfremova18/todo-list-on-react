@@ -1,10 +1,16 @@
 import React, { useState } from "react";
 import style from "./Item.module.css";
 
-const Item = ({ item, checkItem, deleteItem, onHandleChange }) => {
-  const [isEditable, setIsEditable] = useState(false);
-  const [value, setValue] = useState(item.title);
-
+const Item = ({
+  item,
+  checkItem,
+  deleteItem,
+  onHandleChange,
+  setIsEditableItem,
+  isEditableItem,
+  value,
+  setValue,
+}) => {
   const date = item.createdAt;
   const currentDate = date.getDate();
   const currentMonth = date.getMonth();
@@ -12,7 +18,10 @@ const Item = ({ item, checkItem, deleteItem, onHandleChange }) => {
   const strDate = `${currentDate}/${currentMonth}/${currentYear}`;
 
   return (
-    <div className={style.itemOfList} onDoubleClick={() => setIsEditable(true)}>
+    <div
+      className={style.itemOfList}
+      onDoubleClick={() => setIsEditableItem(true)}
+    >
       <div className={style.content}>
         <input
           type="checkbox"
@@ -20,7 +29,7 @@ const Item = ({ item, checkItem, deleteItem, onHandleChange }) => {
           defaultChecked={item.completed}
           onClick={() => checkItem(item.id)}
         />
-        {isEditable ? (
+        {isEditableItem ? (
           <input
             autoFocus
             className={style.editInput}
@@ -29,10 +38,10 @@ const Item = ({ item, checkItem, deleteItem, onHandleChange }) => {
             onKeyDown={(e) => {
               if (e.key === "Enter" && e.target.value.trim() !== "") {
                 onHandleChange("title", value);
-                setIsEditable(false);
+                setIsEditableItem(false);
               }
             }}
-            onBlur={() => setIsEditable(false)}
+            onBlur={() => setIsEditableItem(false)}
           />
         ) : (
           <p>{item.title}</p>
