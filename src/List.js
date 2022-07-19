@@ -8,7 +8,7 @@ const List = ({ onHandleChange, filteredTasks, deleteItem, checkItem }) => {
       {filteredTasks.map((item) => (
         <Item
           onHandleChange={onHandleChange(item.id)}
-          key={Math.random()}
+          key={item.id}
           deleteItem={deleteItem}
           item={item}
           checkItem={checkItem}

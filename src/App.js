@@ -1,17 +1,16 @@
 import React, { useEffect, useState } from "react";
-import List from "./List";
 import style from "./App.module.css";
+import List from "./List";
 import DataSort from "./DataSort";
 import Filter from "./Filter";
 import Pagination from "./Pagination";
-
-const ITEMS_PER_PAGE = 5;
+import { ITEMS_PER_PAGE, FILTER, SORT } from "./constants.js";
 
 const App = () => {
   const [items, setItems] = useState([]);
   const [itemsTitle, setItemsTitle] = useState("");
-  const [filter, setFilter] = useState(undefined);
-  const [sort, setSort] = useState("ASC");
+  const [filter, setFilter] = useState(FILTER.ALL);
+  const [sort, setSort] = useState(SORT.ASC);
   const [currentPage, setCurrentPage] = useState(1);
   const [filteredTasks, setFilteredTasks] = useState([]);
 
@@ -20,12 +19,22 @@ const App = () => {
     const endItem = ITEMS_PER_PAGE * currentPage;
 
     const todos = items
-      .filter((item) =>
-        typeof filter === "boolean" ? item.completed === filter : item
-      )
+      .filter((item) => {
+        switch (filter) {
+          case FILTER.ALL:
+            return item;
+          case FILTER.DONE:
+            return item.completed === true;
+          case FILTER.UNDONE:
+            return item.completed === false;
+        }
+      })
       .sort((a, b) => {
-        if (sort === "ASC") return a.createdAt - b.createdAt;
-        return b.createdAt - a.createdAt;
+        if (sort === SORT.ASC) {
+          return a.createdAt - b.createdAt;
+        } else if (sort === SORT.DESC) {
+          return b.createdAt - a.createdAt;
+        }
       })
       .slice(startItem, endItem);
     setFilteredTasks(todos);
@@ -33,20 +42,13 @@ const App = () => {
 
   const addItem = (event) => {
     if (event.key === "Enter" && event.target.value.trim() !== "") {
-      const date = new Date();
-      const currentDate = date.getDate();
-      const currentMonth = date.getMonth();
-      const currentYear = String(date.getFullYear()).slice(2);
-      const strDate = `${currentMonth}/${currentDate}/${currentYear}`;
-
       setItems([
         ...items,
         {
           id: Date.now(),
           title: itemsTitle,
           completed: false,
-          date: strDate,
-          createdAt: date,
+          createdAt: new Date(),
         },
       ]);
 
@@ -95,7 +97,10 @@ const App = () => {
 
   const deleteItem = (id) => {
     const indexDeleteItem = items.findIndex((i) => i.id === id);
-    setItems(items.filter((_, index) => index !== indexDeleteItem));
+    const remainingItems = items.filter(
+      (_, index) => index !== indexDeleteItem
+    );
+    setItems(remainingItems);
   };
 
   return (
@@ -112,7 +117,7 @@ const App = () => {
       />
 
       {items.length >= 1 ? (
-        <DataSort sort={sort} sortItemOnDate={sortItemOnDate} />
+        <DataSort sort={sort} SORT={SORT} sortItemOnDate={sortItemOnDate} />
       ) : (
         ""
       )}
@@ -125,7 +130,11 @@ const App = () => {
       />
 
       {items.length >= 1 ? (
-        <Filter filter={filter} handleFilterItem={handleFilterItem} />
+        <Filter
+          filter={filter}
+          FILTER={FILTER}
+          handleFilterItem={handleFilterItem}
+        />
       ) : (
         ""
       )}

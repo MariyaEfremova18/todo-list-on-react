@@ -1,24 +1,24 @@
 import React from "react";
 import style from "./Filter.module.css";
 
-const Filter = ({ filter, handleFilterItem }) => {
+const Filter = ({ filter, handleFilterItem, FILTER }) => {
   return (
     <div className={style.filterButtons}>
       <button
-        className={filter === undefined ? `${style.active}` : null}
-        onClick={() => handleFilterItem(undefined)}
+        className={filter === FILTER.ALL ? `${style.active}` : null}
+        onClick={() => handleFilterItem(FILTER.ALL)}
       >
         All
       </button>
       <button
-        className={filter === true ? `${style.active}` : null}
-        onClick={() => handleFilterItem(true)}
+        className={filter === FILTER.DONE ? `${style.active}` : null}
+        onClick={() => handleFilterItem(FILTER.DONE)}
       >
         Done
       </button>
       <button
-        className={filter === false ? `${style.active}` : null}
-        onClick={() => handleFilterItem(false)}
+        className={filter === FILTER.UNDONE ? `${style.active}` : null}
+        onClick={() => handleFilterItem(FILTER.UNDONE)}
       >
         Undone
       </button>
