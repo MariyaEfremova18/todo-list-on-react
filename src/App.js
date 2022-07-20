@@ -89,6 +89,8 @@ const App = () => {
     const remainingItems = items.filter(
       (_, index) => index !== indexDeleteItem
     );
+    const pageNumber = items.length % 5 === 1 ? currentPage - 1 : currentPage;
+    setCurrentPage(pageNumber);
     setItems(remainingItems);
   };
 
