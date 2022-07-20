@@ -13,8 +13,6 @@ const App = () => {
   const [sort, setSort] = useState(SORT.ASC);
   const [currentPage, setCurrentPage] = useState(1);
   const [filteredTasks, setFilteredTasks] = useState([]);
-  const [isEditableItem, setIsEditableItem] = useState(false);
-  const [value, setValue] = useState("");
 
   useEffect(() => {
     const startItem = (currentPage - 1) * ITEMS_PER_PAGE;
@@ -51,23 +49,12 @@ const App = () => {
           title: itemsTitle,
           completed: false,
           createdAt: new Date(),
+          edited: false,
         },
       ]);
 
       setItemsTitle("");
     }
-  };
-
-  const onHandleChange = (id) => {
-    return (key, value) =>
-      setItems((prev) =>
-        prev.map((todo) => {
-          if (todo.id === id) {
-            return { ...todo, [key]: value };
-          }
-          return todo;
-        })
-      );
   };
 
   const changeCurrentPage = (value) => {
@@ -105,6 +92,40 @@ const App = () => {
     setItems(remainingItems);
   };
 
+  const editItem = (id) => {
+    const editedItem = items.map((item) => {
+      if (item.id === id) {
+        const element = { ...item };
+        element.edited = !item.edited;
+        return element;
+      }
+      return item;
+    });
+    setItems(editedItem);
+  };
+
+  const onHandleChange = (id) => {
+    return (key, value) =>
+      setItems((prev) =>
+        prev.map((todo) => {
+          if (todo.id === id) {
+            return { ...todo, [key]: value };
+          }
+          return todo;
+        })
+      );
+  };
+
+  const blurItem = (id) => {
+    const bluredItem = items.map((item) => {
+      if (item.id === id) {
+        return { ...item, title: item.title, edited: false };
+      }
+      return item;
+    });
+    setItems(bluredItem);
+  };
+
   return (
     <div className={style.wrapper}>
       <h1>ToDo</h1>
@@ -129,10 +150,8 @@ const App = () => {
         filteredTasks={filteredTasks}
         deleteItem={deleteItem}
         checkItem={checkItem}
-        setIsEditableItem={setIsEditableItem}
-        isEditableItem={isEditableItem}
-        value={value}
-        setValue={setValue}
+        editItem={editItem}
+        blurItem={blurItem}
       />
 
       {items.length >= 1 ? (

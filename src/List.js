@@ -7,10 +7,8 @@ const List = ({
   filteredTasks,
   deleteItem,
   checkItem,
-  setIsEditableItem,
-  isEditableItem,
-  value,
-  setValue,
+  editItem,
+  blurItem,
 }) => {
   return (
     <ul className={style.list}>
@@ -21,10 +19,8 @@ const List = ({
           deleteItem={deleteItem}
           item={item}
           checkItem={checkItem}
-          setIsEditableItem={setIsEditableItem}
-          isEditableItem={isEditableItem}
-          value={value}
-          setValue={setValue}
+          editItem={editItem}
+          blurItem={blurItem}
         />
       ))}
     </ul>
