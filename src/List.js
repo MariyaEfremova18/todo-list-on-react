@@ -8,7 +8,7 @@ const List = ({
   deleteItem,
   checkItem,
   editItem,
-  blurItem,
+  cancelChanges,
 }) => {
   return (
     <ul className={style.list}>
@@ -20,7 +20,7 @@ const List = ({
           item={item}
           checkItem={checkItem}
           editItem={editItem}
-          blurItem={blurItem}
+          cancelChanges={cancelChanges}
         />
       ))}
     </ul>

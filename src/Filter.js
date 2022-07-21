@@ -1,7 +1,8 @@
 import React from "react";
 import style from "./Filter.module.css";
+import { FILTER } from "./constants.js";
 
-const Filter = ({ filter, handleFilterItem, FILTER }) => {
+const Filter = ({ filter, handleFilterItem }) => {
   return (
     <div className={style.filterButtons}>
       <button

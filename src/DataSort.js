@@ -1,7 +1,8 @@
 import React from "react";
 import style from "./DataSort.module.css";
+import { SORT } from "./constants.js";
 
-const DataSort = ({ sortItemOnDate, sort, SORT }) => {
+const DataSort = ({ sortItemOnDate, sort }) => {
   return (
     <div className={style.sorting}>
       <p>

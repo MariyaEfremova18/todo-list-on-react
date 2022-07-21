@@ -85,10 +85,8 @@ const App = () => {
   };
 
   const deleteItem = (id) => {
-    const indexDeleteItem = items.findIndex((i) => i.id === id);
-    const remainingItems = items.filter(
-      (_, index) => index !== indexDeleteItem
-    );
+    const remainingItems = items.filter((item) => item.id !== id);
+
     const pageNumber = items.length % 5 === 1 ? currentPage - 1 : currentPage;
     setCurrentPage(pageNumber);
     setItems(remainingItems);
@@ -111,21 +109,21 @@ const App = () => {
       setItems((prev) =>
         prev.map((todo) => {
           if (todo.id === id) {
-            return { ...todo, [key]: value };
+            return { ...todo, [key]: value, edited: false };
           }
           return todo;
         })
       );
   };
 
-  const blurItem = (id) => {
-    const bluredItem = items.map((item) => {
+  const cancelChanges = (id) => {
+    const unchangedItems = items.map((item) => {
       if (item.id === id) {
-        return { ...item, title: item.title, edited: false };
+        return { ...item, edited: false };
       }
       return item;
     });
-    setItems(bluredItem);
+    setItems(unchangedItems);
   };
 
   return (
@@ -142,7 +140,7 @@ const App = () => {
       />
 
       {items.length >= 1 ? (
-        <DataSort sort={sort} SORT={SORT} sortItemOnDate={sortItemOnDate} />
+        <DataSort sort={sort} sortItemOnDate={sortItemOnDate} />
       ) : (
         ""
       )}
@@ -153,15 +151,11 @@ const App = () => {
         deleteItem={deleteItem}
         checkItem={checkItem}
         editItem={editItem}
-        blurItem={blurItem}
+        cancelChanges={cancelChanges}
       />
 
       {items.length >= 1 ? (
-        <Filter
-          filter={filter}
-          FILTER={FILTER}
-          handleFilterItem={handleFilterItem}
-        />
+        <Filter filter={filter} handleFilterItem={handleFilterItem} />
       ) : (
         ""
       )}
@@ -170,7 +164,6 @@ const App = () => {
         <Pagination
           currentPage={currentPage}
           items={items}
-          ITEMS_PER_PAGE={ITEMS_PER_PAGE}
           changeCurrentPage={changeCurrentPage}
           nextPage={nextPage}
           prevPage={prevPage}

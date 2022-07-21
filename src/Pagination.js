@@ -1,8 +1,8 @@
 import React from "react";
 import style from "./Pagination.module.css";
+import { ITEMS_PER_PAGE } from "./constants.js";
 
 const Pagination = ({
-  ITEMS_PER_PAGE,
   items,
   changeCurrentPage,
   nextPage,

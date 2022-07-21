@@ -7,7 +7,7 @@ const Item = ({
   deleteItem,
   editItem,
   onHandleChange,
-  blurItem,
+  cancelChanges,
 }) => {
   const date = item.createdAt;
   const currentDate = date.getDate();
@@ -29,14 +29,13 @@ const Item = ({
             autoFocus
             className={style.editInput}
             defaultValue={item.title}
-            onChange={({ target }) => (item.title = target.value)}
             onKeyDown={(e) => {
               if (e.key === "Enter" && e.target.value.trim() !== "") {
                 onHandleChange("title", e.target.value.trim());
-                item.edited = false;
+              } else if (e.key === "Escape") {
+                cancelChanges(item.id);
               }
             }}
-            onBlur={() => blurItem(item.id, item.title)}
           />
         ) : (
           <p>{item.title}</p>
