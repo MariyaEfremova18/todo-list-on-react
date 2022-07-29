@@ -6,7 +6,8 @@ import Filter from "./components/Filter";
 import Pagination from "./components/Pagination";
 import ModalWindow from "./components/ModalWindow";
 import { ITEMS_PER_PAGE, FILTER, SORT, USER_ID } from "./constants.js";
-import API from "./api";
+import axios from "axios";
+const API = process.env.REACT_APP_TODO_API;
 
 const App = () => {
   const [items, setItems] = useState([]);
@@ -19,18 +20,20 @@ const App = () => {
   const [errorMessage, setErrorMessage] = useState("");
 
   const fetchTodoData = async () => {
-    const response = await API.get(`/tasks/${USER_ID}`, {
-      params: {
-        filterBy: filter,
-        order: sort,
-        pp: ITEMS_PER_PAGE,
-        page: currentPage,
-      },
-    }).catch((err) => {
-      if (err.response.status === 400) {
-        setErrorMessage("Task not created");
-      }
-    });
+    const response = await axios
+      .get(`${API}/tasks/${USER_ID}`, {
+        params: {
+          filterBy: filter,
+          order: sort,
+          pp: ITEMS_PER_PAGE,
+          page: currentPage,
+        },
+      })
+      .catch((err) => {
+        if (err.response.status === 400) {
+          setErrorMessage("Task not created");
+        }
+      });
     setItems(response.data.tasks);
     setItemsCount(response.data.count);
   };
@@ -41,9 +44,10 @@ const App = () => {
 
   const addItem = (event) => {
     if (event.key === "Enter" && event.target.value.trim() !== "") {
-      API.post(`/task/${USER_ID}`, {
-        name: itemTitle,
-      })
+      axios
+        .post(`${API}/task/${USER_ID}`, {
+          name: itemTitle,
+        })
         .then(() => fetchTodoData())
         .catch((err) => {
           if (err.response.status === 400) {
@@ -57,17 +61,20 @@ const App = () => {
   };
 
   const checkItem = (uuid, done) => {
-    API.patch(`/task/${USER_ID}/${uuid}`, {
-      done: done,
-    }).then(() => {
-      if (itemsCount <= 1) {
-        setFilter(FILTER.ALL);
-      } else fetchTodoData();
-    });
+    axios
+      .patch(`${API}/task/${USER_ID}/${uuid}`, {
+        done: done,
+      })
+      .then(() => {
+        if (itemsCount <= 1) {
+          setFilter(FILTER.ALL);
+        } else fetchTodoData();
+      });
   };
 
   const deleteItem = async (uuid) => {
-    await API.delete(`/task/${USER_ID}/${uuid}`)
+    await axios
+      .delete(`${API}/task/${USER_ID}/${uuid}`)
       .then(() => {
         fetchTodoData();
       })
@@ -114,9 +121,10 @@ const App = () => {
   };
 
   const onHandleChange = (e, uuid) => {
-    API.patch(`/task/${USER_ID}/${uuid}`, {
-      name: e.target.value.trim(),
-    })
+    axios
+      .patch(`${API}/task/${USER_ID}/${uuid}`, {
+        name: e.target.value.trim(),
+      })
       .then(() => fetchTodoData())
       .catch((err) => {
         if (err.response.status === 400) {
