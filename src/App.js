@@ -19,31 +19,45 @@ const App = () => {
   const [errorMessage, setErrorMessage] = useState("");
 
   const fetchTodoData = async () => {
-    const response = await getItems().catch((err) => {
-      if (err.response.status === 400) {
-        setErrorMessage("Task not created");
+    // const response = await getItems().catch((err) => {
+    //   if (err.response.status === 400) {
+    //     setErrorMessage("Task not created");
+    //   }
+    // });
+    // setItems(response.data.tasks);
+    // setItemsCount(response.data.count);
+    await getItems().then(
+      (response) => {
+        setItems(response.data.tasks);
+        setItemsCount(response.data.count);
+      },
+      (err) => {
+        if (err.response.status === 400) {
+          setErrorMessage("Task not created");
+        }
       }
-    });
-    setItems(response.data.tasks);
-    setItemsCount(response.data.count);
+    );
   };
 
   useEffect(() => {
     fetchTodoData();
   }, [currentPage, filter, sort]);
 
-  const addItem = (event) => {
+  const addItem = async (event, itemTitle) => {
     if (event.key === "Enter" && event.target.value.trim() !== "") {
-      createNewItem()
-        .then(() => fetchTodoData())
-        .catch((err) => {
+      await createNewItem(itemTitle).then(
+        () => {
+          fetchTodoData();
+          setItemTitle("");
+        },
+        (err) => {
           if (err.response.status === 400) {
             setErrorMessage("The task with the same name already create");
           } else if (err.response.status === 422) {
             setErrorMessage("You input invalid symbols");
           }
-        });
-      setItemTitle("");
+        }
+      );
     }
   };
 
@@ -56,16 +70,18 @@ const App = () => {
   };
 
   const deleteItem = async (uuid) => {
-    await deleteThisItem(uuid)
-      .then(() => {
+    await deleteThisItem(uuid).then(
+      () => {
         fetchTodoData();
-      })
-      .catch((err) => {
+      },
+      (err) => {
         setErrorMessage(err.message);
         if (err.response.status === 404) {
           setErrorMessage("Task not found");
         }
-      });
+      }
+    );
+
     if (itemsCount > 5) {
       const pageNumber =
         itemsCount % ITEMS_PER_PAGE === 1 ? currentPage - 1 : currentPage;
@@ -103,15 +119,16 @@ const App = () => {
   };
 
   const onHandleChange = (e, uuid) => {
-    changeItem(e, uuid)
-      .then(() => fetchTodoData())
-      .catch((err) => {
+    changeItem(e, uuid).then(
+      () => fetchTodoData(),
+      (err) => {
         if (err.response.status === 400) {
           setErrorMessage("The task with the same name already create");
         } else if (err.response.status === 422) {
           setErrorMessage("You input invalid symbols");
         }
-      });
+      }
+    );
     setEditedItemUuid("");
   };
 
@@ -130,7 +147,7 @@ const App = () => {
           type="text"
           value={itemTitle}
           onChange={(event) => setItemTitle(event.target.value)}
-          onKeyDown={addItem}
+          onKeyDown={(event, itemTitle) => addItem(event, itemTitle)}
           placeholder="I want to..."
         />
 

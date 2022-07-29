@@ -7,7 +7,7 @@ const todoAPI = axios.create({
 });
 
 export const getItems = (filter, sort, currentPage) => {
-  todoAPI.get(`/tasks/${USER_ID}`, {
+  return todoAPI.get(`/tasks/${USER_ID}`, {
     params: {
       filterBy: filter,
       order: sort,
@@ -18,22 +18,18 @@ export const getItems = (filter, sort, currentPage) => {
 };
 
 export const createNewItem = (itemTitle) => {
-  todoAPI.post(`/task/${USER_ID}`, {
-    params: {
-      name: itemTitle,
-    },
+  return todoAPI.post(`/task/${USER_ID}`, {
+    name: itemTitle,
   });
 };
 
 export const changeItem = (uuid, done, e) => {
-  todoAPI.patch(`/task/${USER_ID}/${uuid}`, {
-    params: {
-      name: e.target.value.trim(),
-      done: done,
-    },
+  return todoAPI.patch(`/task/${USER_ID}/${uuid}`, {
+    name: e.target.value.trim(),
+    done: done,
   });
 };
 
 export const deleteThisItem = (uuid) => {
-  todoAPI.delete(`/task/${USER_ID}/${uuid}`);
+  return todoAPI.delete(`/task/${USER_ID}/${uuid}`);
 };
