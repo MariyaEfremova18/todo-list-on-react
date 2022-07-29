@@ -18,15 +18,8 @@ const App = () => {
   const [editedItemUuid, setEditedItemUuid] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
-  const fetchTodoData = async () => {
-    // const response = await getItems().catch((err) => {
-    //   if (err.response.status === 400) {
-    //     setErrorMessage("Task not created");
-    //   }
-    // });
-    // setItems(response.data.tasks);
-    // setItemsCount(response.data.count);
-    await getItems().then(
+  const fetchTodoData = () => {
+    getItems().then(
       (response) => {
         setItems(response.data.tasks);
         setItemsCount(response.data.count);
@@ -43,9 +36,9 @@ const App = () => {
     fetchTodoData();
   }, [currentPage, filter, sort]);
 
-  const addItem = async (event, itemTitle) => {
+  const addItem = (event, itemTitle) => {
     if (event.key === "Enter" && event.target.value.trim() !== "") {
-      await createNewItem(itemTitle).then(
+      createNewItem(itemTitle).then(
         () => {
           fetchTodoData();
           setItemTitle("");
@@ -70,7 +63,7 @@ const App = () => {
   };
 
   const deleteItem = async (uuid) => {
-    await deleteThisItem(uuid).then(
+    deleteThisItem(uuid).then(
       () => {
         fetchTodoData();
       },
