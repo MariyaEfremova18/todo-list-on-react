@@ -7,7 +7,6 @@ import Pagination from "./components/Pagination";
 import ModalWindow from "./components/ModalWindow";
 import { ITEMS_PER_PAGE, FILTER, SORT, USER_ID } from "./constants.js";
 import API from "./api";
-// import "../.env";
 
 const App = () => {
   const [items, setItems] = useState([]);
@@ -17,10 +16,9 @@ const App = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsCount, setItemsCount] = useState(0);
   const [editedItemUuid, setEditedItemUuid] = useState("");
-  const [allItemsCount, setAllItemsCount] = useState(0);
   const [errorMessage, setErrorMessage] = useState("");
 
-  const fetchData = async () => {
+  const fetchTodoData = async () => {
     const response = await API.get(`/tasks/${USER_ID}`, {
       params: {
         filterBy: filter,
@@ -33,27 +31,20 @@ const App = () => {
         setErrorMessage("Task not created");
       }
     });
-
     setItems(response.data.tasks);
     setItemsCount(response.data.count);
   };
 
   useEffect(() => {
-    fetchData();
+    fetchTodoData();
   }, [currentPage, filter, sort]);
-
-  useEffect(() => {
-    API.get(`/tasks/${USER_ID}`).then((response) =>
-      setAllItemsCount(response.data.count)
-    );
-  }, [filter]);
 
   const addItem = (event) => {
     if (event.key === "Enter" && event.target.value.trim() !== "") {
       API.post(`/task/${USER_ID}`, {
         name: itemTitle,
       })
-        .then(() => fetchData())
+        .then(() => fetchTodoData())
         .catch((err) => {
           if (err.response.status === 400) {
             setErrorMessage("The task with the same name already create");
@@ -71,25 +62,28 @@ const App = () => {
     }).then(() => {
       if (itemsCount <= 1) {
         setFilter(FILTER.ALL);
-      } else fetchData();
+      } else fetchTodoData();
     });
   };
 
   const deleteItem = async (uuid) => {
     await API.delete(`/task/${USER_ID}/${uuid}`)
-      .then(() => fetchData())
+      .then(() => {
+        fetchTodoData();
+      })
       .catch((err) => {
         setErrorMessage(err.message);
         if (err.response.status === 404) {
           setErrorMessage("Task not found");
         }
       });
-
     if (itemsCount > 5) {
       const pageNumber =
         itemsCount % ITEMS_PER_PAGE === 1 ? currentPage - 1 : currentPage;
 
       setCurrentPage(pageNumber);
+    } else if (itemsCount < 2) {
+      setFilter(FILTER.ALL);
     }
   };
 
@@ -123,7 +117,7 @@ const App = () => {
     API.patch(`/task/${USER_ID}/${uuid}`, {
       name: e.target.value.trim(),
     })
-      .then(() => fetchData())
+      .then(() => fetchTodoData())
       .catch((err) => {
         if (err.response.status === 400) {
           setErrorMessage("The task with the same name already create");
@@ -153,11 +147,7 @@ const App = () => {
           placeholder="I want to..."
         />
 
-        {allItemsCount >= 1 ? (
-          <DataSort sort={sort} sortItemByDate={sortItemByDate} />
-        ) : (
-          ""
-        )}
+        <DataSort sort={sort} sortItemByDate={sortItemByDate} />
 
         <List
           onHandleChange={onHandleChange}
@@ -169,15 +159,12 @@ const App = () => {
           editedItemUuid={editedItemUuid}
         />
 
-        {allItemsCount >= 1 ? (
-          <Filter
-            filter={filter}
-            items={items}
-            handleFilterItem={handleFilterItem}
-          />
-        ) : (
-          ""
-        )}
+        <Filter
+          filter={filter}
+          setFilter={setFilter}
+          items={items}
+          handleFilterItem={handleFilterItem}
+        />
 
         {itemsCount > ITEMS_PER_PAGE ? (
           <Pagination
