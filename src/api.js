@@ -23,7 +23,8 @@ export const createNewItem = (itemTitle) => {
   });
 };
 
-export const changeItem = (uuid, done, e) => {
+export const changeItem = (e, uuid, done) => {
+  console.log(e);
   return todoAPI.patch(`/task/${USER_ID}/${uuid}`, {
     name: e.target.value.trim(),
     done: done,

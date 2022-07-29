@@ -19,7 +19,7 @@ const App = () => {
   const [errorMessage, setErrorMessage] = useState("");
 
   const fetchTodoData = () => {
-    getItems().then(
+    getItems(filter, sort, currentPage).then(
       (response) => {
         setItems(response.data.tasks);
         setItemsCount(response.data.count);
@@ -36,7 +36,7 @@ const App = () => {
     fetchTodoData();
   }, [currentPage, filter, sort]);
 
-  const addItem = (event, itemTitle) => {
+  const addItem = (event) => {
     if (event.key === "Enter" && event.target.value.trim() !== "") {
       createNewItem(itemTitle).then(
         () => {
@@ -140,7 +140,7 @@ const App = () => {
           type="text"
           value={itemTitle}
           onChange={(event) => setItemTitle(event.target.value)}
-          onKeyDown={(event, itemTitle) => addItem(event, itemTitle)}
+          onKeyDown={(event) => addItem(event)}
           placeholder="I want to..."
         />
 
