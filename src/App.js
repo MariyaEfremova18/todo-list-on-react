@@ -5,9 +5,8 @@ import DataSort from "./components/DataSort";
 import Filter from "./components/Filter";
 import Pagination from "./components/Pagination";
 import ModalWindow from "./components/ModalWindow";
-import { ITEMS_PER_PAGE, FILTER, SORT, USER_ID } from "./constants.js";
-import axios from "axios";
-const API = process.env.REACT_APP_TODO_API;
+import { ITEMS_PER_PAGE, FILTER, SORT } from "./constants.js";
+import { getItems, createNewItem, deleteThisItem, changeItem } from "./api.js";
 
 const App = () => {
   const [items, setItems] = useState([]);
@@ -20,20 +19,11 @@ const App = () => {
   const [errorMessage, setErrorMessage] = useState("");
 
   const fetchTodoData = async () => {
-    const response = await axios
-      .get(`${API}/tasks/${USER_ID}`, {
-        params: {
-          filterBy: filter,
-          order: sort,
-          pp: ITEMS_PER_PAGE,
-          page: currentPage,
-        },
-      })
-      .catch((err) => {
-        if (err.response.status === 400) {
-          setErrorMessage("Task not created");
-        }
-      });
+    const response = await getItems().catch((err) => {
+      if (err.response.status === 400) {
+        setErrorMessage("Task not created");
+      }
+    });
     setItems(response.data.tasks);
     setItemsCount(response.data.count);
   };
@@ -44,10 +34,7 @@ const App = () => {
 
   const addItem = (event) => {
     if (event.key === "Enter" && event.target.value.trim() !== "") {
-      axios
-        .post(`${API}/task/${USER_ID}`, {
-          name: itemTitle,
-        })
+      createNewItem()
         .then(() => fetchTodoData())
         .catch((err) => {
           if (err.response.status === 400) {
@@ -61,20 +48,15 @@ const App = () => {
   };
 
   const checkItem = (uuid, done) => {
-    axios
-      .patch(`${API}/task/${USER_ID}/${uuid}`, {
-        done: done,
-      })
-      .then(() => {
-        if (itemsCount <= 1) {
-          setFilter(FILTER.ALL);
-        } else fetchTodoData();
-      });
+    changeItem(uuid, done).then(() => {
+      if (itemsCount <= 1) {
+        setFilter(FILTER.ALL);
+      } else fetchTodoData();
+    });
   };
 
   const deleteItem = async (uuid) => {
-    await axios
-      .delete(`${API}/task/${USER_ID}/${uuid}`)
+    await deleteThisItem(uuid)
       .then(() => {
         fetchTodoData();
       })
@@ -121,10 +103,7 @@ const App = () => {
   };
 
   const onHandleChange = (e, uuid) => {
-    axios
-      .patch(`${API}/task/${USER_ID}/${uuid}`, {
-        name: e.target.value.trim(),
-      })
+    changeItem(e, uuid)
       .then(() => fetchTodoData())
       .catch((err) => {
         if (err.response.status === 400) {
