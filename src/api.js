@@ -1,9 +1,8 @@
 import axios from "axios";
 import { ITEMS_PER_PAGE, USER_ID } from "./constants.js";
 
-const BASE_URL = process.env.REACT_APP_TODO_API;
 const todoAPI = axios.create({
-  baseURL: BASE_URL,
+  baseURL: process.env.REACT_APP_TODO_API,
 });
 
 export const getItems = (filter, sort, currentPage) => {
@@ -23,15 +22,10 @@ export const createNewItem = (itemTitle) => {
   });
 };
 
-export const changeItem = (event, uuid) => {
+export const changeItem = (name, uuid, done) => {
   return todoAPI.patch(`/task/${USER_ID}/${uuid}`, {
-    name: event.target.value.trim(),
-  });
-};
-
-export const checkThisItem = (uuid, done) => {
-  return todoAPI.patch(`/task/${USER_ID}/${uuid}`, {
-    done: done,
+    name,
+    done,
   });
 };
 

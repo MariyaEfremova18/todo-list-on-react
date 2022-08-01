@@ -5,14 +5,9 @@ import DataSort from "./components/DataSort";
 import Filter from "./components/Filter";
 import Pagination from "./components/Pagination";
 import ModalWindow from "./components/ModalWindow";
+import styles from "./components/Item.module.css";
 import { ITEMS_PER_PAGE, FILTER, SORT } from "./constants.js";
-import {
-  getItems,
-  createNewItem,
-  deleteThisItem,
-  changeItem,
-  checkThisItem,
-} from "./api.js";
+import { getItems, createNewItem, deleteThisItem, changeItem } from "./api.js";
 
 const App = () => {
   const [items, setItems] = useState([]);
@@ -60,14 +55,6 @@ const App = () => {
     }
   };
 
-  const checkItem = async (uuid, done) => {
-    await checkThisItem(uuid, done);
-
-    if (filter !== FILTER.ALL) {
-      fetchTodoData();
-    }
-  };
-
   const deleteItem = async (uuid) => {
     try {
       await deleteThisItem(uuid);
@@ -79,13 +66,11 @@ const App = () => {
       }
     }
 
-    if (itemsCount > 5) {
+    if (itemsCount > 5 && currentPage !== 1) {
       const pageNumber =
         itemsCount % ITEMS_PER_PAGE === 1 ? currentPage - 1 : currentPage;
 
       setCurrentPage(pageNumber);
-    } else if (itemsCount < 1) {
-      setFilter(FILTER.ALL);
     }
   };
 
@@ -115,10 +100,18 @@ const App = () => {
     setEditedItemUuid("");
   };
 
-  const onHandleChange = async (e, uuid) => {
+  const onHandleChange = async (name, uuid, done, e) => {
     try {
-      await changeItem(e, uuid);
-      fetchTodoData();
+      await changeItem(name, uuid, done);
+
+      if (filter !== FILTER.ALL) {
+        fetchTodoData();
+      } else if (
+        filter === FILTER.ALL &&
+        e.target.classList.contains(`${styles.editInput}`)
+      ) {
+        fetchTodoData();
+      }
       setEditedItemUuid("");
     } catch (error) {
       if (error.response.status === 400) {
@@ -154,7 +147,6 @@ const App = () => {
           onHandleChange={onHandleChange}
           items={items}
           deleteItem={deleteItem}
-          checkItem={checkItem}
           editItem={editItem}
           cancelChanges={cancelChanges}
           editedItemUuid={editedItemUuid}

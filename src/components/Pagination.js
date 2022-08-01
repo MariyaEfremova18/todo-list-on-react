@@ -3,10 +3,8 @@ import style from "./Pagination.module.css";
 import { ITEMS_PER_PAGE } from "../constants.js";
 
 const Pagination = ({
-  items,
   changeCurrentPage,
   nextPage,
-  prevPage,
   currentPage,
   itemsCount,
 }) => {

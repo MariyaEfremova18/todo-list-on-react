@@ -3,7 +3,6 @@ import style from "./Item.module.css";
 
 const Item = ({
   item,
-  checkItem,
   deleteItem,
   editItem,
   onHandleChange,
@@ -26,7 +25,7 @@ const Item = ({
           type="checkbox"
           className={style.checkbox}
           defaultChecked={item.done}
-          onClick={() => checkItem(item.uuid, !item.done)}
+          onClick={(e) => onHandleChange(item.name, item.uuid, !item.done, e)}
         />
         {editedItemUuid === item.uuid ? (
           <input
@@ -35,7 +34,7 @@ const Item = ({
             defaultValue={item.name}
             onKeyDown={(e) => {
               if (e.key === "Enter" && e.target.value.trim() !== "") {
-                onHandleChange(e, item.uuid);
+                onHandleChange(e.target.value.trim(), item.uuid, item.done, e);
               } else if (e.key === "Escape") {
                 cancelChanges(item.uuid);
               }
