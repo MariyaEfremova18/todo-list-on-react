@@ -23,9 +23,14 @@ export const createNewItem = (itemTitle) => {
   });
 };
 
-export const changeItem = (e, uuid, done) => {
+export const changeItem = (event, uuid) => {
   return todoAPI.patch(`/task/${USER_ID}/${uuid}`, {
-    name: e.target.value.trim(),
+    name: event.target.value.trim(),
+  });
+};
+
+export const checkThisItem = (uuid, done) => {
+  return todoAPI.patch(`/task/${USER_ID}/${uuid}`, {
     done: done,
   });
 };

@@ -6,7 +6,13 @@ import Filter from "./components/Filter";
 import Pagination from "./components/Pagination";
 import ModalWindow from "./components/ModalWindow";
 import { ITEMS_PER_PAGE, FILTER, SORT } from "./constants.js";
-import { getItems, createNewItem, deleteThisItem, changeItem } from "./api.js";
+import {
+  getItems,
+  createNewItem,
+  deleteThisItem,
+  changeItem,
+  checkThisItem,
+} from "./api.js";
 
 const App = () => {
   const [items, setItems] = useState([]);
@@ -54,12 +60,12 @@ const App = () => {
     }
   };
 
-  const checkItem = (uuid, done) => {
-    changeItem(uuid, done).then(() => {
-      if (itemsCount <= 1) {
-        setFilter(FILTER.ALL);
-      } else fetchTodoData();
-    });
+  const checkItem = async (uuid, done) => {
+    await checkThisItem(uuid, done);
+
+    if (filter !== FILTER.ALL) {
+      fetchTodoData();
+    }
   };
 
   const deleteItem = async (uuid) => {
@@ -109,18 +115,18 @@ const App = () => {
     setEditedItemUuid("");
   };
 
-  const onHandleChange = (e, uuid) => {
-    changeItem(e, uuid).then(
-      () => fetchTodoData(),
-      (err) => {
-        if (err.response.status === 400) {
-          setErrorMessage("The task with the same name already create");
-        } else if (err.response.status === 422) {
-          setErrorMessage("You input invalid symbols");
-        }
+  const onHandleChange = async (e, uuid) => {
+    try {
+      await changeItem(e, uuid);
+      fetchTodoData();
+      setEditedItemUuid("");
+    } catch (error) {
+      if (error.response.status === 400) {
+        setErrorMessage("The task with the same name already create");
+      } else if (error.response.status === 422) {
+        setErrorMessage("You input invalid symbols");
       }
-    );
-    setEditedItemUuid("");
+    }
   };
 
   return (
