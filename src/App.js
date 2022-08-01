@@ -63,24 +63,22 @@ const App = () => {
   };
 
   const deleteItem = async (uuid) => {
-    deleteThisItem(uuid).then(
-      () => {
-        fetchTodoData();
-      },
-      (err) => {
-        setErrorMessage(err.message);
-        if (err.response.status === 404) {
-          setErrorMessage("Task not found");
-        }
+    try {
+      await deleteThisItem(uuid);
+      fetchTodoData();
+    } catch (error) {
+      setErrorMessage(error.message);
+      if (error.response.status === 404) {
+        setErrorMessage("Task not found");
       }
-    );
+    }
 
     if (itemsCount > 5) {
       const pageNumber =
         itemsCount % ITEMS_PER_PAGE === 1 ? currentPage - 1 : currentPage;
 
       setCurrentPage(pageNumber);
-    } else if (itemsCount < 2) {
+    } else if (itemsCount < 1) {
       setFilter(FILTER.ALL);
     }
   };
